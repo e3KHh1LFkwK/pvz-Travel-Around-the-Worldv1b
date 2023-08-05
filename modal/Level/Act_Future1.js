@@ -6,13 +6,12 @@
  'use strict';
 
 oS.Init({
-  PName: [oPeashooter, oSunFlower, oWallNut, oPotatoMine, oCabbage, oRepeater, oCherryBomb],
-  ZName: [oZombie, oConeheadZombie, oBucketheadZombie, oJetpackZombie],
+  PName: [oPeashooter, oSunFlower, oWallNut, oPotatoMine, oCabbage, oBonkChoy, oRepeater, oCherryBomb, oSnowPea, oSunShroom, oPuffShroom, oFumeShroom, oFlowerPot, oPumpkinHead],
+  ZName: [oZombie, oConeheadZombie, oBucketheadZombie, oMechConeZombie, oJetpackZombie],
   SunNum: 150,
   LevelName:  " ",
   LvlEName: 1,
   backgroundImage: "images/interface/backgroundFuture.jpg",
-  SummonZombieArea:[35,105,200,375],
   LoadMusic: "Future/Bgm_Future_Ready",
   StartGameMusic: "Future/Bgm_Future_Fight",
   FixedProps: 'disabled',
@@ -25,7 +24,7 @@ oS.Init({
   },
 }, 
 {
-  AZ: [[oZombie, 4, 1], [oConeheadZombie, 4, 4], [oBucketheadZombie, 1, 7], [oJetpackZombie, 1, 2]],
+  AZ: [[oZombie, 4, 1], [oConeheadZombie, 4, 4], [oBucketheadZombie, 1, 7], [oMechConeZombie, 1, 7], [oJetpackZombie, 1, 2]],
   FlagNum: 9,
   FlagToSumNum: {
     a1: [3, 5, 8],
