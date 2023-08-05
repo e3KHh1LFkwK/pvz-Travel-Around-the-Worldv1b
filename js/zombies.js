@@ -2172,7 +2172,6 @@ oBrickZombie = InheritO(oBucketheadZombie, {
         let self = this;
         return "images/Card/JetpackZombie.png";
       },
-
       GoingDieHead(id, PicArr, self) {
         CZombies.prototype.GoingDieHeadNew(id, PicArr, self, {
           top: self.pixelTop + 44,
@@ -2180,10 +2179,65 @@ oBrickZombie = InheritO(oBucketheadZombie, {
           bc: self.pixelTop + 118
         });
       }
+    }),
+    oMechConeZombie = InheritO(OrnNoneZombies, {
+      EName: "oMechConeZombie",
+      CName: $__language_Array__["MechConeZombie"],
+      HP: 2300,
+      HeadGif: 1,
+      StandGif: 5,
+      AttackGif: 3,
+      DieGif: 4,
+      width: 216,
+      height: 174,
+      beAttackedPointL: 48,
+      beAttackedPointR: 128,
+      Speed: 1.65,
+      Almanac: {
+        Tip: $__language_Array__["MechConeZombie_Descriptilon"],
+        Story: $__language_Array__["MechConeZombie_Flavor"]
+      },
+      getShadow: self => "left:55px;top:" + (self.height - 15) + "px;",
+      PicArr: (a => ["", "", a + "walk.gif", a + "Attack.gif",  a + "Die.gif", a + "idle.gif", 'images/Zombies/BoomDie.webp'])("images/Zombies/MechConeZombie/"),
+      GetCardImg() {
+        let self = this;
+        return "images/Card/ConeMechZombie.webp";
+      },
+      GoingDie() {
+        let self = this,
+            id = self.id;
+        self.GoingDieHead(id, self.PicArr, self);
+        self.beAttacked = 0;
+        self.isGoingDie = 1;
+        self.FreeFreezeTime = self.FreeSetbodyTime = self.FreeSlowTime = 0;
+        self.NormalDie();
+        self.ChanceThrowCoin(self);
+      },
     
+      NormalDie() {
+        PlayAudio("Cone_Mvmt_Death");
+        let self = this;
+        self.PrivateDie && self.PrivateDie(self);
+        self.EleBody.src = self.PicArr[self.DieGif];
+        oSym.addTask(200, oEffects.fadeOut, [self.Ele, 'fast', ClearChild]);
+        self.HP = 0;
+        delete $Z[self.id];
+        oP.MonitorZombiePosition(self);
+        self.PZ && oP.MonPrgs();
+      },
+        CrushDie: function () {
+          this.NormalDie();
+      },
+      ExplosionDie: function () {
+        this.NormalDie();
+      },
     }),
     //活动僵尸从以下开始
     //儿童节僵尸
+    oChildrenZombie = InheritO(oZombie, {
+      EName: "oChildrenZombie",
+      PicArr: (a => ["", "", a + "walk.gif", a + "Attack.gif", a + "DieWalk.gif", a + "DieAttack.gif", a + "ZombieHead.png", a + "Die.gif", a + "idle.gif", 'images/Zombies/BoomDie.webp'])("images/Zombies/Events/ChildrenDay/Zombie/"),
+    }),
     oChildrenImp = InheritO(oZombie, {
       EName: "oChildrenImp",
       CName: $__language_Array__["c867bd4b2d9e4a9bed4df55d9da81877"],
@@ -2200,8 +2254,7 @@ oBrickZombie = InheritO(oBucketheadZombie, {
         Story: $__language_Array__["6466cc5f5b654141e53b97c8ccbf29e9"]
       },
       getShadow: self => "left:45px;top:" + (self.height - 15) + "px;",
-      PicArr: (a => ["", "", a + "Zombie.webp", a + "ZombieAttack.webp", a + "ZombieLostHead.webp", a + "ZombieLostHeadAttack.webp", a + "ZombieHead.webp", a + "ZombieDie.webp", a + "1.gif", 'images/Zombies/Imp/BoomDie.webp'])("images/Zombies/Events/ChildrenDay/Imp/"),
-    
+      PicArr: (a => ["", "", a + "Zombie.gif", a + "ZombieAttack.gif", a + "ZombieLostHead.gif", a + "ZombieLostHeadAttack.webp", a + "ZombieHead.webp", a + "ZombieDie.gif", a + "1.gif", 'images/Zombies/Imp/BoomDie.webp'])("images/Zombies/Events/ChildrenDay/Imp/"),
       GoingDieHead(id, PicArr, self) {
         CZombies.prototype.GoingDieHeadNew(id, PicArr, self, {
           top: self.pixelTop + 44,
@@ -2210,6 +2263,48 @@ oBrickZombie = InheritO(oBucketheadZombie, {
         });
       }
     
+    }),
+    oIceCreamTruck = InheritO(OrnNoneZombies, {
+      EName: "oIceCreamTruck",
+      CName: $__language_Array__["IceCreamTruck"],
+      HP: 675,
+      StandGif: 8,
+      BoomDieGif: 9,
+      width: 425,
+      height: 220,
+      GetDTop: 10,
+      beAttackedPointL: 0,
+      beAttackedPointR: 175,
+      AKind: 2,
+      Ornaments: 1,
+      Almanac: {
+        Tip: $__language_Array__["IceCreamTruck_Descriptilon"],
+        Weakness: $__language_Array__["b02658e8ec8618b57e33d565752101af"],
+        Speed: $__language_Array__["039fdc7ae48c1e6b583012180d39bde3"],
+        Story: $__language_Array__["IceCreamTruck_Flavor"]
+      },
+      GetCardImg() {
+        let self = this;
+        return "images/Card/SideChapters/Events/IceCreamTruck.webp";
+      },
+      getShadow: self => `left:${self.beAttackedPointL - 10}px;top:${self.height - 22}px;`,
+      getDisplayShadow: self => `left:${self.beAttackedPointL - 50}px;top:${self.height - 22}px; width: 250px; background-size: 250px 38px; height: 38px;`,
+      PicArr: (a => ["", "", a + "Walk.gif", a + "ZombieAttack.webp", a + "ZombieLostHead.webp", a + "ZombieLostHeadAttack.webp", a + "ZombieHead.webp", a + "ZombieDie.webp", a + "idle.gif", 'images/Zombies/BoomDie.webp'])("images/Zombies/Events/ChildrenDay/IceCreamTruck/"),
+
+      NormalDie() {
+        PlayAudio("Cone_Mvmt_Death");
+        let self = this;
+        self.PrivateDie && self.PrivateDie(self);
+        self.EleBody.src = self.PicArr[self.DieGif];
+        self.HP = 0;
+        delete $Z[self.id];
+        oP.MonitorZombiePosition(self);
+        self.PZ && oP.MonPrgs();
+          },
+      BirthCallBack(self) {
+        PlayAudio("groan_" + Math.floor(1 + Math.random() * 6));
+        OrnNoneZombies.prototype.BirthCallBack(self);
+      }
     }),
     //森林僵尸从以下开始
 oNewspaperZombie = InheritO(OrnIIZombies, {
@@ -4012,7 +4107,7 @@ oMembraneZombie = InheritO(OrnNoneZombies, {
     oSym.addTask(10, function (id, e) {
       (e = $Z[id]) && e.SetBrightness(e, e.EleBody);
     }, [obj.id]);
-  };
+  };6
 
   return InheritO(OrnNoneZombies, {
     EName: "oZomboni",
@@ -7476,7 +7571,7 @@ oCrystal = InheritO(oConeheadZombie, {
     beAttackedPointR: 84,
     PicArr: (path => ['0.webp', '1.webp', '2.webp', '3.webp', 'damage1.png', 'damage2.png'].map(s => path + s))("images/Props/EgyptHieroglyph/"),
     AudioArr: ['plastichit1', 'plastichit2', 'plastichit2'],
-    getShadow: self => `left:${self.beAttackedPointL - 15}px;top:${self.height - 22 - 30}px;`,
+    getShadow: self => "left:45px;top:" + (self.height - 15) + "px;",
     isMoving: 0,
     ChkActs: (o, R, arR, i) => o.GoLeft(o, R, arR, i),
     //默认向左走
